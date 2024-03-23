@@ -9,7 +9,8 @@ public class ExchangeRateAccess : IExchangeRateAccess
 {
     private static readonly IEnumerable<ExchangeRate> ExchangeRateDatabase = new List<ExchangeRate>
     {
-        new() { From = IsoCurrency.Gbp, To = IsoCurrency.Eur, Date = new DateTime(2024, 3, 23), Rate = 1.11m }
+        new() { From = IsoCurrency.Gbp, To = IsoCurrency.Eur, Date = new DateTime(2024, 3, 23), Rate = 1.11m },
+        new() { From = IsoCurrency.Gbp, To = IsoCurrency.Eur, Date = new DateTime(2023, 3, 23), Rate = 1.21m }
     };
 
     public ExchangeRate GetExchangeRate(string isoCurrencyFrom, string isoCurrencyTo, DateTime? date = null)
@@ -26,7 +27,8 @@ public class ExchangeRateAccess : IExchangeRateAccess
 
         if (!currencyPair.Any())
         {
-            throw new Exception($"Currency pair not found for {isoCurrencyFrom} and {isoCurrencyTo} at date {date}");
+            throw new Exception(
+                $"Currency pair not found for {isoCurrencyFrom} and {isoCurrencyTo} at date {date ?? DateTime.Now}");
         }
 
         return currencyPair.OrderByDescending(currency => currency.Date).FirstOrDefault();
