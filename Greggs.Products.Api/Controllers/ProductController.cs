@@ -21,7 +21,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<Product> Get(int pageStart = 0, int pageSize = 8,
+    public IEnumerable<Product> Get(int pageStart = 0, int pageSize = 5,
         string isoCurrencyCode = IsoCurrency.GbpCurrencyCode)
     {
         return _productService.GetProducts(pageStart, pageSize, isoCurrencyCode);
