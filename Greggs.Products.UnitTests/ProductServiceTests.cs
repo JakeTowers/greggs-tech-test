@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using FluentAssertions;
 using Greggs.Products.Api.DataAccess;
@@ -55,5 +56,15 @@ public class ProductServiceTests
         var products = _productService.GetProducts(pageStart, pageSize);
 
         products.Should().BeEquivalentTo(expectedProducts);
+    }
+
+    [Fact]
+    public void GetProducts_AllProducts_InEuros()
+    {
+        const int pageStart = 0;
+        const int pageSize = 8;
+        var expectedProducts = new List<Product>();
+
+        throw new NotImplementedException();
     }
 }
