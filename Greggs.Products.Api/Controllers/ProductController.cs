@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Greggs.Products.Api.DataAccess;
 using Greggs.Products.Api.Models;
 using Greggs.Products.Api.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -20,8 +21,9 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<Product> Get(int pageStart = 0, int pageSize = 8)
+    public IEnumerable<Product> Get(int pageStart = 0, int pageSize = 8,
+        string isoCurrencyCode = IsoCurrency.GbpCurrencyCode)
     {
-        return _productService.GetProducts(pageStart, pageSize);
+        return _productService.GetProducts(pageStart, pageSize, isoCurrencyCode);
     }
 }

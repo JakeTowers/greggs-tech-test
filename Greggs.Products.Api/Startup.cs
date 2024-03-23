@@ -14,9 +14,11 @@ public class Startup
     {
         services.AddControllers();
 
+        services.AddTransient<ICurrencyConverterService, CurrencyConverterService>();
         services.AddTransient<IProductService, ProductService>();
 
         services.AddScoped<IDataAccess<Product>, ProductAccess>();
+        services.AddScoped<IExchangeRateAccess, ExchangeRateAccess>();
 
         services.AddSwaggerGen();
     }
