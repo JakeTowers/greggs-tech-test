@@ -24,19 +24,24 @@ public class ProductService : IProductService
     public IEnumerable<Product> GetProducts(int? pageStart, int? pageSize,
         string isoCurrencyCode = IsoCurrency.GbpCurrencyCode)
     {
+        if (!IsoCurrency.SupportedCurrencyCodes.Contains(isoCurrencyCode))
+        {
+            _logger.LogError("ISO Currency Code {isoCurrencyCode} is not supported", isoCurrencyCode);
+            throw new Exception($"ISO Currency Code {isoCurrencyCode} is not supported");
+        }
+
         var products = _productRepository.List(pageStart, pageSize);
 
-        return isoCurrencyCode switch
+        if (isoCurrencyCode == IsoCurrency.GbpCurrencyCode) return products;
+
+        var productsInCurrency = products.Select(product => new Product
         {
-            IsoCurrency.GbpCurrencyCode => products,
-            IsoCurrency.EurCurrencyCode => products.Select(product => new Product
-            {
-                Name = product.Name,
-                PriceInPounds = product.PriceInPounds,
-                PriceInEuros = _currencyConverterService.ConvertCurrency(product.PriceInPounds,
-                    IsoCurrency.GbpCurrencyCode, IsoCurrency.EurCurrencyCode)
-            }),
-            _ => throw new Exception($"ISO Currency Code {isoCurrencyCode} is not supported")
-        };
+            Name = product.Name,
+            PriceInPounds = product.PriceInPounds,
+            PriceInEuros = _currencyConverterService.ConvertCurrency(product.PriceInPounds,
+                IsoCurrency.GbpCurrencyCode, isoCurrencyCode)
+        });
+
+        return productsInCurrency;
     }
 }

@@ -18,8 +18,16 @@ public class CurrencyConverterService : ICurrencyConverterService
 
     public decimal ConvertCurrency(decimal amount, string isoCurrencyFrom, string isoCurrencyTo, DateTime? date = null)
     {
-        var exchangeRate = _exchangeRateRepository.GetExchangeRate(isoCurrencyFrom, isoCurrencyTo, date);
-
-        return amount * exchangeRate.Rate;
+        try
+        {
+            var exchangeRate = _exchangeRateRepository.GetExchangeRate(isoCurrencyFrom, isoCurrencyTo, date);
+            return amount * exchangeRate.Rate;
+        }
+        catch (Exception exception)
+        {
+            _logger.LogError(exception, "Unable to convert currency {isoCurrencyFrom} to {isoCurrencyTo}",
+                isoCurrencyFrom, isoCurrencyTo);
+            throw;
+        }
     }
 }
