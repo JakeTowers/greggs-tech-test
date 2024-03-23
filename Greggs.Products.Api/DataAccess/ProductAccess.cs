@@ -23,6 +23,9 @@ public class ProductAccess : IDataAccess<Product>
 
     public IEnumerable<Product> List(int? pageStart, int? pageSize)
     {
+        if (pageSize > ProductDatabase.Count())
+            pageSize = ProductDatabase.Count();
+
         var queryable = ProductDatabase.AsQueryable();
 
         if (pageStart.HasValue)
