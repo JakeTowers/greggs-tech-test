@@ -17,20 +17,20 @@ public class ExchangeRateAccess : IExchangeRateAccess
     {
         var queryable = ExchangeRateDatabase.AsQueryable();
 
-        var currencyPair = queryable.Where(currency =>
+        var exchangeRates = queryable.Where(currency =>
             currency.From.Code == isoCurrencyFrom && currency.To.Code == isoCurrencyTo);
 
         if (date != null)
         {
-            currencyPair = currencyPair.Where(currency => currency.Date == date);
+            exchangeRates = exchangeRates.Where(currency => currency.Date == date);
         }
 
-        if (!currencyPair.Any())
+        if (!exchangeRates.Any())
         {
             throw new Exception(
-                $"Currency pair not found for {isoCurrencyFrom} and {isoCurrencyTo} at date {date ?? DateTime.Now}");
+                $"Exchange rate not found for {isoCurrencyFrom} to {isoCurrencyTo} at date {date ?? DateTime.Now}");
         }
 
-        return currencyPair.OrderByDescending(currency => currency.Date).FirstOrDefault();
+        return exchangeRates.OrderByDescending(currency => currency.Date).FirstOrDefault();
     }
 }

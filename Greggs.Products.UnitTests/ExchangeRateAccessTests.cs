@@ -43,6 +43,6 @@ public class ExchangeRateAccessTests
 
         _exchangeRateRepository.Invoking(x => x.GetExchangeRate(currencyCodeFrom, currencyCodeTo))
             .Should().Throw<Exception>()
-            .WithMessage($"Currency pair not found for {currencyCodeFrom} and {currencyCodeTo} at date {DateTime.Now}");
+            .WithMessage($"Exchange rate not found for {currencyCodeFrom} to {currencyCodeTo} at date {DateTime.Now}");
     }
 }
