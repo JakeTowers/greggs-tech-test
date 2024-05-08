@@ -1,3 +1,6 @@
+using Greggs.Products.Api.DataAccess;
+using Greggs.Products.Api.Models;
+using Greggs.Products.Api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +13,12 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddControllers();
+
+        services.AddTransient<ICurrencyConverterService, CurrencyConverterService>();
+        services.AddTransient<IProductService, ProductService>();
+
+        services.AddScoped<IDataAccess<Product>, ProductAccess>();
+        services.AddScoped<IExchangeRateAccess, ExchangeRateAccess>();
 
         services.AddSwaggerGen();
     }
